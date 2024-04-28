@@ -1,3 +1,6 @@
-<select  class="department-list" (change)="onSelectDepartment($event)">
-  <option *ngFor="let department of departments">{{ department }}</option>
-</select>
+<div *ngIf="( vm$ | async) as vm">
+  <select   class="department-list" (change)="onSelectDepartment($event)">
+    <option *ngFor="let department of vm">{{ department }}</option>
+  </select>
+
+</div>

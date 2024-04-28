@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ComunicationService } from '../../services/comunication.service';
-import { map, combineLatest, Observable, tap, Subject, BehaviorSubject  } from 'rxjs';
+import { map, combineLatest, Observable, BehaviorSubject  } from 'rxjs';
 import { Product } from '../../models/product';
 
 interface ViewModel  {

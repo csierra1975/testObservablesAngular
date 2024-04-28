@@ -62,7 +62,7 @@ export class ComunicationService {
    }
 
   departaments$(): Observable<string[]> {
-    return this.departmentsSubject.asObservable();
+    return this.departmentsSubject;
   }
 
   departamentChanged(department: string) {

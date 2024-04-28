@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ComunicationService } from '../../services/comunication.service';
+import { BehaviorSubject,  map, tap } from 'rxjs';
 
 @Component({
   selector: 'app-departments',
@@ -9,19 +10,13 @@ import { ComunicationService } from '../../services/comunication.service';
   templateUrl: './departments.component.html',
   styleUrl: './departments.component.css'
 })
-export class DepartmentsComponent implements OnInit{
+export class DepartmentsComponent {
 
   @Output() departmentSelected = new EventEmitter<string>();
 
-  departments: string[] = [];
-
   constructor(private comunicationService: ComunicationService) {}
 
-  ngOnInit() {
-    this.comunicationService.departaments$().subscribe(departments => {
-      this.departments = departments;
-    });
-  }
+  vm$ = this.comunicationService.departaments$();
 
   onSelectDepartment(event: any) {
     const selectedDepartment = event.target.value;
