@@ -1,0 +1,11 @@
+<!-- product-filter.component.html -->
+<div class="filter">
+  <input type="text" placeholder="Buscar por nombre"  class="filter-input" [(ngModel)]="nameFilter">
+  <input type="number" placeholder="Filter by price from"  class="filter-input" [(ngModel)]="priceFilterFrom">
+  <input type="number" placeholder="Filter by price to"  class="filter-input" [(ngModel)]="priceFilterTo">
+  <button (click)="applyFilter()" class="filter-button">Aplicar filtro</button>
+</div>
+<hr>
+<ng-container *ngFor="let filterValue of filterValues">
+  <app-filter-value [nameFilter]="filterValue" (closeClicked)="deleteFilterValue($event)"></app-filter-value>
+</ng-container>
