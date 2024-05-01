@@ -1,17 +1,18 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, startWith, take, tap } from 'rxjs';
-import { DepartmentsWithProducts } from '../models/departmentsWithProducts';
-import { Product } from '../models/product';
-import { filter } from '../models/filter';
-import {  ProductsState } from '../models';
-import { Store, createFeatureSelector, createSelector, select,  } from '@ngrx/store';
+import { EntityAdapter, EntityState, createEntityAdapter } from "@ngrx/entity";
+import { DepartmentsWithProducts } from "./departmentsWithProducts";
 
-@Injectable({
-  providedIn: 'root'
-})
-export class ComunicationService {
+export interface Products {
+  department: DepartmentsWithProducts,
+}
 
-  private departmentsWithProducts: DepartmentsWithProducts = {
+export interface ProductsState extends EntityState<Products> {
+  departments: DepartmentsWithProducts
+}
+
+export const adapter: EntityAdapter<Products> = createEntityAdapter({  });
+
+export const initialState: ProductsState = adapter.getInitialState(
+  { departments: {
     'Electrónica': [
       { id: 1, name: 'Smartphone', price: 599.99, details: 'Un teléfono inteligente con pantalla táctil y muchas características.' },
       { id: 2, name: 'Laptop', price: 1299.99, details: 'Una computadora portátil potente y ligera.' },
@@ -47,57 +48,6 @@ export class ComunicationService {
       { id: 24, name: 'Puzzle de 1000 piezas', price: 29.99, details: 'Puzzle desafiante con 1000 piezas para horas de diversión.' },
       { id: 25, name: 'Juego de té de juguete', price: 14.99, details: 'Juego de té de juguete con tazas, platillos y jarra.' }
     ]
-  }
-
-  private departments: string[] = ['Electrónica', 'Ropa', 'Hogar', 'Deportes', 'Juguetes'];
-  private departmentsSubject: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(this.departments);
-
-  public departmentsChanged$: BehaviorSubject<string> = new BehaviorSubject<string>('Electrónica');
-  public filterApplied$: BehaviorSubject<filter> = new BehaviorSubject<filter>({name: '', priceFrom: null, priceTo: null});
-
-  public setFilters$: Subject<filter> = new Subject<filter>();
-
-  private filters: filter = {name: '', priceFrom: null, priceTo: null} ;
-
-  private currentProducts: DepartmentsWithProducts = {};
-
-  constructor(private store: Store<ProductsState>) {
-    this.filterApplied$.subscribe(filters =>  this.filters = {...filters});
-
-    const selectEstadoProductos = createSelector(createFeatureSelector<ProductsState>('departments'), ({ departments }: ProductsState) =>
-      departments);
-
-    const currentState$ = this.store.select(selectEstadoProductos);
-
-    currentState$
-    .pipe(
-    ).subscribe( state => this.currentProducts = state);
-
-   }
-
-  departaments$(): Observable<string[]> {
-    return this.departmentsSubject;
-  }
-
-  departamentChanged(department: string) {
-    this.departmentsChanged$.next(department);
-  }
-
-  setFilters(filters: filter) {
-    this.filters = {...filters}
-    this.setFilters$.next(filters);
-  }
-
-  getProductsByDepartment(department: (string | null) = null): Product[] {
-
-    let filteredProducts = this.currentProducts[department ?? 'Electrónica'].filter(product => {
-      let priceCondition = product.price >= (this.filters.priceFrom ?? 0) && product.price <= (this.filters.priceTo ?? 10000000);
-      let searchStringCondition = product.name.toLowerCase().includes(this.filters.name.toLowerCase());
-      return priceCondition && searchStringCondition;
-    });
-
-    return  filteredProducts || [];
-  }
-}
-
+  } }
+  );
 

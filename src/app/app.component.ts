@@ -10,7 +10,7 @@ import { ProductFilterComponent } from './components/product-filter/product-filt
     standalone: true,
     templateUrl: './app.component.html',
     styleUrl: './app.component.css',
-    imports: [RouterOutlet, DepartmentsComponent, ProductsComponent, ProductFilterComponent]
+    imports: [RouterOutlet, DepartmentsComponent, ProductsComponent, ProductFilterComponent,]
 })
 export class AppComponent {
   title = 'Test Observables';
